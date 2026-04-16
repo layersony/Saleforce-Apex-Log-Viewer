@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Log Viewer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>Apex Log Viewer</h1>
+    <span class="badge">Offline — no data leaves your browser</span>
+  </div>
+
+  <div class="drop-zone" id="dropZone">
+    <div class="icon">📋</div>
+    <strong>Drop your Apex log file here</strong>
+    <p>or click to browse</p>
+    <p style="margin-top: 16px; font-size: 12px; color: #aaa;">Supports .log files from Salesforce debug logs</p>
+    <input type="file" id="fileInput" accept=".log,.txt">
+  </div>
+
+  <div class="dashboard" id="dashboard">
+    <div class="filename-bar" id="filenameBar"></div>
+
+    <div class="metrics" id="metricsGrid"></div>
+
+    <div class="section" id="limitsSection">
+      <div class="section-header" onclick="toggleSection('limitsBody')">
+        <h2>Governor limits</h2>
+        <span class="toggle" id="limitsToggle">▼</span>
+      </div>
+      <div class="section-body" id="limitsBody">
+        <table id="limitsTable">
+          <thead>
+            <tr>
+              <th>Limit</th>
+              <th>Used</th>
+              <th>Max</th>
+              <th>Usage %</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="calloutsSection">
+      <div class="section-header" onclick="toggleSection('calloutsBody')">
+        <h2>HTTP callouts</h2>
+        <span class="toggle" id="calloutsToggle">▼</span>
+      </div>
+      <div class="section-body" id="calloutsBody">
+        <table id="calloutsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Endpoint</th>
+              <th>Method</th>
+              <th>Status</th>
+              <th>Duration (ms)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="soqlSection">
+      <div class="section-header" onclick="toggleSection('soqlBody')">
+        <h2>SOQL queries</h2>
+        <span class="toggle" id="soqlToggle">▼</span>
+      </div>
+      <div class="section-body" id="soqlBody">
+        <table id="soqlTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Query</th>
+              <th>Rows</th>
+              <th>Line</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="exceptionsSection">
+      <div class="section-header" onclick="toggleSection('exceptionsBody')">
+        <h2>Exceptions &amp; errors</h2>
+        <span class="toggle" id="exceptionsToggle">▼</span>
+      </div>
+      <div class="section-body" id="exceptionsBody">
+        <div id="exceptionsList" class="timeline"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header" onclick="toggleSection('rawBody')">
+        <h2>Raw log events</h2>
+        <span class="toggle" id="rawToggle">▼</span>
+      </div>
+      <div class="section-body collapsed" id="rawBody">
+        <div class="filter-bar">
+          <input type="text" id="searchInput" placeholder="Search events..." oninput="filterLog()">
+          <select id="eventFilter" onchange="filterLog()">
+            <option value="">All event types</option>
+            <option value="CALLOUT">CALLOUT</option>
+            <option value="SOQL">SOQL</option>
+            <option value="METHOD">METHOD</option>
+            <option value="EXCEPTION">EXCEPTION</option>
+            <option value="LIMIT">LIMIT</option>
+            <option value="DML">DML</option>
+            <option value="USER_DEBUG">USER_DEBUG</option>
+          </select>
+        </div>
+        <div class="log-scroll" id="logScroll"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
